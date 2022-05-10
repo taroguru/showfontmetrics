@@ -1,10 +1,17 @@
 <script lang="ts">
-	export let name: string;
-</script>
 
+	let mainText: string;
+	mainText='Lorem Ipsum';
+
+	function InputHandler (event: Event) {
+		mainText = event.target.value;
+	}
+</script>
+ 
 <main>
-	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
+	<h1>Show me the FontMetrics</h1>
+	<textarea  value={mainText} on:input={InputHandler} />
+	<div>Debug Console : <br />{mainText}</div>
 </main>
 
 <style>
