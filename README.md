@@ -6,4 +6,4 @@ css설정에 따라 폰트가 어떻게 배치되고, 실제 몇 px을 차지하
 
 # not included
 
-자체([Glyfe](https://fonts.google.com/knowledge/glossary/glyph)는 다루고있지 않다.
+자체([Glyfe](https://fonts.google.com/knowledge/glossary/glyph))는 다루고있지 않다.
