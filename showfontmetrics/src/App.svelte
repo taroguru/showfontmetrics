@@ -3,6 +3,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 
 <script lang="ts">
+	export let name: string;
+	
 	import StyledTextArea from "./StyledTextArea.svelte";
 	let styledTextArea;
 
@@ -12,15 +14,28 @@
 	let fontSize: number;
 	fontSize=16;
 
+	let baseline: number;
+	baseline = 0;
+	
+	let bottomY: number;
+	let baseLineY: number;
+	bottomY = 0;
+	baseLineY = 0;
+
+	let styledText: string;
+	styledText = '';
+	
 	function applyFontStyle(){
 		styledTextArea.applyFontStyleModule();
+		baseline = styledTextArea.getBaselineHeight();
+		styledText = styledTextArea.getAppliedStyle();
 	}
-	
+
 </script>
 
 <main>
 	<div class="mainForm">
-		<h1>Show me the FontMetrics</h1>
+		<h1>{name}</h1>
 		<StyledTextArea bind:mainText={mainText} fontSize={fontSize} bind:this={styledTextArea} />
 	</div>
 	<hr>
@@ -38,6 +53,10 @@
 		<p>Debug Console</p>
 		<p>MainText : {mainText}</p>
 		<p>FontSize : {fontSize}</p>
+		<p>BaseLine : {baseline}</p>
+		<p>bottomY : {bottomY}</p>
+		<p>baseLineY : {baseLineY}</p>
+		<p>styledText : {styledText}</p>
 	</div>
 </main>
 
