@@ -14,6 +14,10 @@
         return appliedStyle;
     }
 
+    export function getTextAreaElement(): Element{
+        return textAreaElement;
+    }
+
 	export function applyFontStyleModule(){
 		appliedStyle=`
 			font-size: ${fontSize}px;
@@ -33,25 +37,6 @@
         return (bottomY - baseLineY) ;        
     }
 
-    export function getTextAreaElement(): Element{
-        return textAreaElement;
-    }
-
-    export function getBottomY(element: Element): number{
-        return element.getBoundingClientRect().bottom;
-    }
-
-    export function getTopY(element: Element): number{
-        return element.getBoundingClientRect().top;
-    }
-
-    export function getLeftX(element: Element): number{
-        return element.getBoundingClientRect().left;
-    }
-
-    export function getRightX(element: Element): number{
-        return element.getBoundingClientRect().right;
-    }
 
 </script>
 
@@ -62,7 +47,7 @@
 <style>
 	textarea{
 		width: 80%;
-		height: 50px;
+		height: 3rem;
 	}
 
     #lorem{

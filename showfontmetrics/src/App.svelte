@@ -3,7 +3,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 
 <script lang="ts">
-	import {tick} from 'svelte';
+	import {onMount} from 'svelte';
+	import {tick} from 'svelte'; 
 
 	//Default Properties
 	export let name: string;
@@ -11,12 +12,12 @@
 	//Elements
 	import StyledTextArea from "./StyledTextArea.svelte";
 	let styledTextArea: StyledTextArea;
-	let baselineElement: Element;
+	let baselineElement: SVGSVGElement;
 
-	let leftElement: Element;
-	let rightElement: Element;
-	let bottomElement: Element;
-	let topElement: Element;
+	let leftElement: SVGSVGElement;
+	let rightElement: SVGSVGElement;
+	let bottomElement: SVGSVGElement;
+	let topElement: SVGSVGElement;
 
 	//Properties
 	let mainText: string;
@@ -60,7 +61,7 @@
 	}
 	let boundRect: string = '';
 
-	function toString(rect: Element): string{
+	function toString(rect: DOMRect): string{
 		let para: string ='';
 		for (var key in rect) {
 			if(typeof rect[key] !== 'function') {
@@ -71,6 +72,10 @@
 		return para;
 	}
 
+	onMount(async() => {
+		applyFontStyle();
+	});
+	
 </script>
 
 <svg class="lineHorizontal" bind:this={baselineElement}>
