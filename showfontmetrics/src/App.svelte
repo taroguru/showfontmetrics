@@ -3,45 +3,101 @@
 <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 
 <script lang="ts">
+	import {tick} from 'svelte';
+
+	//Default Properties
 	export let name: string;
 	
+	//Elements
 	import StyledTextArea from "./StyledTextArea.svelte";
-	let styledTextArea;
+	let styledTextArea: StyledTextArea;
+	let baselineElement: Element;
 
+	let leftElement: Element;
+	let rightElement: Element;
+	let bottomElement: Element;
+	let topElement: Element;
+
+	//Properties
 	let mainText: string;
-	mainText='Lorem Ipsum';
+	mainText='À, É, È, Ç Lorem Ipsum 한글뙜따!?A';
 	
-	let fontSize: number;
-	fontSize=16;
-
-	let baseline: number;
-	baseline = 0;
+	//스타일 관련 텍스트
+	let fontSize: number	= 14;
+	let styledText: string	= "";
+	let fontHeight: number  = 14;
+	let ascent: number		= 0;
+	let descent: number		= 0;
 	
-	let bottomY: number;
-	let baseLineY: number;
-	bottomY = 0;
-	baseLineY = 0;
-
-	let styledText: string;
-	styledText = '';
 	
-	function applyFontStyle(){
+	async function applyFontStyle(){
 		styledTextArea.applyFontStyleModule();
-		baseline = styledTextArea.getBaselineHeight();
-		styledText = styledTextArea.getAppliedStyle();
+		styledText=styledTextArea.getAppliedStyle();
+		boundRect = toString(styledTextArea.getSpanElement().getBoundingClientRect());
+		
+		await tick();	//화면 갱신을 기다리자.
+		positionLine();
+		
+	}
+
+	function positionLine(){
+		
+		//가이드라인을 갱신
+		topElement.style.top 	= styledTextArea.getSpanElement().getBoundingClientRect().top + "px" ;
+		bottomElement.style.top = styledTextArea.getSpanElement().getBoundingClientRect().bottom + "px" ;
+		leftElement.style.left 	= styledTextArea.getSpanElement().getBoundingClientRect().left + "px" ;
+		rightElement.style.left = styledTextArea.getSpanElement().getBoundingClientRect().right + "px" ;
+
+		let baseilneHeight = styledTextArea.getBaselineHeight();
+		let newLinePos = styledTextArea.getSpanElement().getBoundingClientRect().bottom -  baseilneHeight;
+		baselineElement.style.top = newLinePos + "px" ;
+
+
+		fontHeight = styledTextArea.getSpanElement().getBoundingClientRect().bottom - styledTextArea.getSpanElement().getBoundingClientRect().top;
+		ascent = fontHeight - baseilneHeight;
+		descent = baseilneHeight;
+		
+	}
+	let boundRect: string = '';
+
+	function toString(rect: Element): string{
+		let para: string ='';
+		for (var key in rect) {
+			if(typeof rect[key] !== 'function') {
+				para += `${ key } : ${ rect[key] } `;
+			}
+		}
+
+		return para;
 	}
 
 </script>
 
+<svg class="lineHorizontal" bind:this={baselineElement}>
+	<line x1="0" y1="0" x2="100%" y2="0" style="stroke:rgb(255,0,0);stroke-width:1"></line>
+</svg> 
+<svg class="lineHorizontal" bind:this={bottomElement}>
+	<line x1="0" y1="0" x2="100%" y2="0" style="stroke:rgb(255,0,0);stroke-width:1"></line>
+</svg> 
+<svg class="lineHorizontal" bind:this={topElement}>
+	<line x1="0" y1="0" x2="100%" y2="0" style="stroke:rgb(255,0,0);stroke-width:1"></line>
+</svg> 
+<svg class="lineVertical" bind:this={leftElement}>
+	<line x1="0" y1="0" x2="0" y2="100%" style="stroke:rgb(255,0,0);stroke-width:1"></line>
+</svg> 
+<svg class="lineVertical" bind:this={rightElement}>
+	<line x1="0" y1="0" x2="0" y2="100%" style="stroke:rgb(255,0,0);stroke-width:1"></line>
+</svg> 
+
 <main>
 	<div class="mainForm">
 		<h1>{name}</h1>
-		<StyledTextArea bind:mainText={mainText} fontSize={fontSize} bind:this={styledTextArea} />
+		<StyledTextArea on:input={applyFontStyle} bind:mainText={mainText} fontSize={fontSize} bind:this={styledTextArea} />
 	</div>
 	<hr>
 	<div class="StyleInputs">
 		<p>Style Inputs</p>
-		<label for="inputFontSize">Font Size:</label>
+		<label for="inputFontSize">Font Size(pixel):</label>
 		<input id="inputFontSize" type="text" bind:value={fontSize} on:input={applyFontStyle} />
 <!--
 		<label for="inputFontURL">Font URL:</label>
@@ -51,13 +107,14 @@
 	<hr>
 	<div class="DebugConsole">
 		<p>Debug Console</p>
+		<p>BoundRect: {boundRect}</p>
 		<p>MainText : {mainText}</p>
-		<p>FontSize : {fontSize}</p>
-		<p>BaseLine : {baseline}</p>
-		<p>bottomY : {bottomY}</p>
-		<p>baseLineY : {baseLineY}</p>
 		<p>styledText : {styledText}</p>
+		<p>FontHeight : {fontHeight}px</p>
+		<p>Ascent : {ascent}px</p>
+		<p>Dscent : {descent}px</p>
 	</div>
+	
 </main>
 
 <style>
@@ -82,6 +139,19 @@
 		main {
 			max-width: none;
 		}
+	}
 
+	.lineVertical{
+		position:absolute;
+		top : 0 ;
+		height:100%;
+		width:1px;
+	}
+
+	.lineHorizontal{
+		position:absolute;
+		left : 0 ;
+		height:1px;
+		width:100%
 	}
 </style>
