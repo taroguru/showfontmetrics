@@ -25,6 +25,7 @@
 	
 	//스타일 관련 텍스트
 	let fontSize: number	= 14;
+	let lineHeight: string	= 'normal';
 	let styledText: string	= "";
 	let fontHeight: number  = 14;
 	let ascent: number		= 0;
@@ -97,13 +98,17 @@
 <main>
 	<div class="mainForm">
 		<h1>{name}</h1>
-		<StyledTextArea on:input={applyFontStyle} bind:mainText={mainText} fontSize={fontSize} bind:this={styledTextArea} />
+		<StyledTextArea on:input={applyFontStyle} bind:mainText={mainText} fontSize={fontSize} lineHeight={lineHeight} bind:this={styledTextArea} />
 	</div>
 	<hr>
 	<div class="StyleInputs">
 		<p>Style Inputs</p>
-		<label for="inputFontSize">Font Size(pixel):</label>
+		<label for="inputFontSize">Font Size(pixel) : </label>
 		<input id="inputFontSize" type="text" bind:value={fontSize} on:input={applyFontStyle} />
+	
+		<label for="inputLineHeight">line-height : </label>
+		<input id="inputLineHeight" type="text" bind:value={lineHeight} on:change={applyFontStyle} />
+
 <!--
 		<label for="inputFontURL">Font URL:</label>
 		<input id="inputFontURL" type="text" value={fontURL} on:change={e=>fontURL=e.target.value} />

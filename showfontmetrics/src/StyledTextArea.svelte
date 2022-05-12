@@ -2,6 +2,7 @@
      
     export let mainText: string;
     export let fontSize: number;
+    export let lineHeight: string;
     let textAreaElement: Element;
     let appliedStyle: string;
     let spanElement: Element;
@@ -21,6 +22,7 @@
 	export function applyFontStyleModule(){
 		appliedStyle=`
 			font-size: ${fontSize}px;
+            line-height: ${lineHeight};
 		`;
 	}
 
