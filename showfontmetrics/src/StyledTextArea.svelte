@@ -6,6 +6,11 @@
     let textAreaElement: Element;
     export let appliedStyle: string;
     let spanElement: Element;
+    export function setFontFamily(newFontFamily: string) {
+        //this.fontfamily = newFontFamily;
+        textAreaElement.style.fontFamily = newFontFamily;
+        spanElement.style.fontFamily = newFontFamily;
+    }
 
     export function getSpanElement(): Element{
         return spanElement;
@@ -23,7 +28,8 @@
 		appliedStyle=`font-size: ${fontSize}px;
 line-height: ${lineHeight};
 letter-spacing: 0px;
-word-spacing: 0px;`;
+word-spacing: 0px;
+font-family: CustomFontFamily;`;
 	}
 
     export function setAppliedStyle(style: string) {
@@ -45,10 +51,11 @@ word-spacing: 0px;`;
 
 
 </script>
-
-<textarea bind:value={mainText} bind:this={textAreaElement} />
-<br />
-<span id="lorem" style={appliedStyle} bind:this={spanElement}>{mainText}</span>
+<div >
+    <textarea bind:value={mainText} bind:this={textAreaElement} />
+    <br />
+    <span id="lorem" style={appliedStyle} bind:this={spanElement}>{mainText}</span>
+</div>
     
 <style>
 	textarea{

@@ -1,7 +1,3 @@
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-
 <script lang="ts">
 	import {onMount} from 'svelte';
 	import {tick} from 'svelte'; 
@@ -74,6 +70,18 @@
 		return para;
 	}
 
+	let fontURL : string = 'https://hangeul.pstatic.net/hangeul_static/webfont/NanumGothic/NanumGothic.woff';
+	const LOADEDFONTNAME: string = 'CustomFontFamily';
+
+	async function loadFontFile () {
+		const myFont = new FontFace(LOADEDFONTNAME, `url(${fontURL})` );
+		await myFont.load();
+		document.fonts.add(myFont);
+		//todo. set styledTextarea fontFamily
+		styledTextArea.setFontFamily(LOADEDFONTNAME);
+		drawRectGuideLine();
+	}
+
 	onMount(async() => {
 		applyFontStyle();
 	});
@@ -84,16 +92,16 @@
 	<line x1="0" y1="0" x2="100%" y2="0" style="stroke:rgb(255,0,0);stroke-width:1"></line>
 </svg> 
 <svg class="lineHorizontal" bind:this={bottomElement}>
-	<line x1="0" y1="0" x2="100%" y2="0" style="stroke:rgb(255,0,0);stroke-width:1"></line>
+	<line x1="0" y1="0" x2="100%" y2="0" style="stroke:rgb(0,0,255);stroke-width:1"></line>
 </svg> 
 <svg class="lineHorizontal" bind:this={topElement}>
-	<line x1="0" y1="0" x2="100%" y2="0" style="stroke:rgb(255,0,0);stroke-width:1"></line>
+	<line x1="0" y1="0" x2="100%" y2="0" style="stroke:rgb(0,0,255);stroke-width:1"></line>
 </svg> 
 <svg class="lineVertical" bind:this={leftElement}>
-	<line x1="0" y1="0" x2="0" y2="100%" style="stroke:rgb(255,0,0);stroke-width:1"></line>
+	<line x1="0" y1="0" x2="0" y2="100%" style="stroke:rgb(0,0,255);stroke-width:1"></line>
 </svg> 
 <svg class="lineVertical" bind:this={rightElement}>
-	<line x1="0" y1="0" x2="0" y2="100%" style="stroke:rgb(255,0,0);stroke-width:1"></line>
+	<line x1="0" y1="0" x2="0" y2="100%" style="stroke:rgb(0,0,255);stroke-width:1"></line>
 </svg> 
 
 <main>
@@ -113,10 +121,11 @@
 			<label for="inputLineHeight">line-height : Not Use! </label>
 			<input id="inputLineHeight" type="text" bind:value={lineHeight} on:change={applyFontStyle} />
 		</div>
-<!--
-		<label for="inputFontURL">Font URL:</label>
-		<input id="inputFontURL" type="text" value={fontURL} on:change={e=>fontURL=e.target.value} />
-		-->
+		<div id="divFontURL" >
+			<label for="inputFontURL">Font URL(woff url) : </label>
+			<input id="inputFontURL" type="text" bind:value={fontURL}  />
+			<button on:click={loadFontFile}>Change Font!</button>
+		</div>
 	</div>
 	<hr>
 	<div class="DebugConsole">
@@ -139,8 +148,7 @@
 	main {
 		text-align: center;
 		padding: 1em;
-		margin: 0 auto;
-		font-family: 'Roboto', sans-serif;
+		margin: 0 auto;	
 	}
 
 	h1 {
@@ -174,4 +182,16 @@
 		height:100px;
 		width:80%;
 	}
+
+	#inputFontURL {
+		width: 60%;
+	}
+
+	#divFontURL {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+	}
+
 </style>
