@@ -4,7 +4,7 @@
     export let fontSize: number;
     export let lineHeight: string;
     let textAreaElement: Element;
-    let appliedStyle: string;
+    export let appliedStyle: string;
     let spanElement: Element;
 
     export function getSpanElement(): Element{
@@ -20,11 +20,15 @@
     }
 
 	export function applyFontStyleModule(){
-		appliedStyle=`
-			font-size: ${fontSize}px;
-            line-height: ${lineHeight};
-		`;
+		appliedStyle=`font-size: ${fontSize}px;
+line-height: ${lineHeight};
+letter-spacing: 0px;
+word-spacing: 0px;`;
 	}
+
+    export function setAppliedStyle(style: string) {
+        appliedStyle = style;
+    }
 
     export function getBaselineHeight(): number {
         let bottomY = spanElement.getBoundingClientRect().bottom;//viewport pos of bottom of el

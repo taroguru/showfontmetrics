@@ -21,7 +21,7 @@
 
 	//Properties
 	let mainText: string;
-	mainText='À, É, È, Ç Lorem Ipsum 한글뙜따!?A';
+	mainText='興 À, É, È, Ç Lorem Ipsum 한글뙜따!?A';
 	
 	//스타일 관련 텍스트
 	let fontSize: number	= 14;
@@ -35,11 +35,13 @@
 	async function applyFontStyle(){
 		styledTextArea.applyFontStyleModule();
 		styledText=styledTextArea.getAppliedStyle();
+		drawRectGuideLine();
+	}
+
+	async function drawRectGuideLine(){
 		boundRect = toString(styledTextArea.getSpanElement().getBoundingClientRect());
-		
 		await tick();	//화면 갱신을 기다리자.
 		positionLine();
-		
 	}
 
 	function positionLine(){
@@ -53,7 +55,6 @@
 		let baseilneHeight = styledTextArea.getBaselineHeight();
 		let newLinePos = styledTextArea.getSpanElement().getBoundingClientRect().bottom -  baseilneHeight;
 		baselineElement.style.top = newLinePos + "px" ;
-
 
 		fontHeight = styledTextArea.getSpanElement().getBoundingClientRect().bottom - styledTextArea.getSpanElement().getBoundingClientRect().top;
 		ascent = fontHeight - baseilneHeight;
@@ -98,17 +99,20 @@
 <main>
 	<div class="mainForm">
 		<h1>{name}</h1>
-		<StyledTextArea on:input={applyFontStyle} bind:mainText={mainText} fontSize={fontSize} lineHeight={lineHeight} bind:this={styledTextArea} />
+		<StyledTextArea bind:mainText={mainText} fontSize={fontSize} lineHeight={lineHeight} appliedStyle={styledText} bind:this={styledTextArea} />
 	</div>
 	<hr>
 	<div class="StyleInputs">
-		<p>Style Inputs</p>
-		<label for="inputFontSize">Font Size(pixel) : </label>
-		<input id="inputFontSize" type="text" bind:value={fontSize} on:input={applyFontStyle} />
-	
-		<label for="inputLineHeight">line-height : </label>
-		<input id="inputLineHeight" type="text" bind:value={lineHeight} on:change={applyFontStyle} />
-
+		<p>Style Text. Edit below!</p>
+		<textarea id="StyleTextArea" bind:value={styledText} on:input={drawRectGuideLine}/> 
+		<!-- not sued items-->
+		<div hidden>
+			<label for="inputFontSize">Font Size(pixel) : Not Use!</label>
+			<input id="inputFontSize" type="text" bind:value={fontSize} on:input={applyFontStyle} />
+		
+			<label for="inputLineHeight">line-height : Not Use! </label>
+			<input id="inputLineHeight" type="text" bind:value={lineHeight} on:change={applyFontStyle} />
+		</div>
 <!--
 		<label for="inputFontURL">Font URL:</label>
 		<input id="inputFontURL" type="text" value={fontURL} on:change={e=>fontURL=e.target.value} />
@@ -116,13 +120,14 @@
 	</div>
 	<hr>
 	<div class="DebugConsole">
-		<p>Debug Console</p>
-		<p>BoundRect: {boundRect}</p>
-		<p>MainText : {mainText}</p>
-		<p>styledText : {styledText}</p>
-		<p>FontHeight : {fontHeight}px</p>
-		<p>Ascent : {ascent}px</p>
-		<p>Dscent : {descent}px</p>
+		<p>FontMetrics Infomation : </p>
+		<ul>
+			<li><p>BoundRect: {boundRect}</p></li>
+			<li><p>MainText : {mainText}</p></li>
+			<li><p>FontHeight : {fontHeight}px</p></li>
+			<li><p>Ascent : {ascent}px</p></li>
+			<li><p>Dscent : {descent}px</p></li>
+		</ul>
 	</div>
 	
 </main>
@@ -163,5 +168,10 @@
 		left : 0 ;
 		height:1px;
 		width:100%
+	}
+
+	#StyleTextArea {
+		height:100px;
+		width:80%;
 	}
 </style>
